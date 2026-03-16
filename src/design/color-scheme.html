@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>#003366 配色パレット</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg-primary: #003366;
+        --bg-secondary: #002244;
+        --bg-surface: #0a4070;
+        --bg-elevated: #1a5080;
+        --text-primary: #ffffff;
+        --text-secondary: #b8d4e8;
+        --text-muted: #7faacc;
+        --text-inverse: #003366;
+        --accent-gold: #f0c040;
+        --accent-teal: #2ed8c4;
+        --accent-coral: #ff7a6e;
+        --accent-sky: #5eb8ff;
+        --accent-emerald: #00c48c;
+        --semantic-success: #4ade80;
+        --semantic-warning: #fbbf24;
+        --semantic-error: #f87171;
+        --semantic-info: #60a5fa;
+        --border-subtle: rgba(255, 255, 255, 0.1);
+        --border-default: rgba(255, 255, 255, 0.18);
+        --border-strong: rgba(255, 255, 255, 0.3);
+      }
+      body {
+        background: var(--bg-primary);
+        font-family:
+          "Segoe UI",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        color: var(--text-primary);
+        padding: 48px 32px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      @media (max-width: 680px) {
+        body {
+          padding: 24px 16px;
+        }
+        h1 {
+          font-size: 26px !important;
+        }
+      }
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: var(--accent-gold);
+        color: var(--text-inverse);
+        font-weight: 700;
+        font-size: 13px;
+        padding: 10px 24px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+        z-index: 100;
+        pointer-events: none;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+      .sw {
+        border-radius: 12px;
+        padding: 18px 16px;
+        cursor: pointer;
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 110px;
+      }
+      .sw.lg {
+        min-height: 140px;
+        padding: 28px 24px;
+      }
+      .sw:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      }
+      .sw-n {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        opacity: 0.85;
+      }
+      .sw-h {
+        font-size: 15px;
+        font-weight: 700;
+        font-family: "JetBrains Mono", monospace;
+        margin-top: 4px;
+      }
+      .sw-m {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .wb {
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(0, 0, 0, 0.35);
+        padding: 3px 8px;
+        border-radius: 6px;
+        letter-spacing: 0.03em;
+      }
+      .rt {
+        font-size: 11px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .sw.lt .sw-n {
+        color: #003366;
+      }
+      .sw.lt .sw-h {
+        color: #002244;
+      }
+      .sw.lt .rt {
+        color: rgba(0, 51, 102, 0.6);
+      }
+      .sw.dk .sw-n {
+        color: #fff;
+      }
+      .sw.dk .sw-h {
+        color: #fff;
+      }
+      .sw.dk .rt {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .hover-card {
+        background: var(--bg-surface);
+        border-radius: 16px;
+        border: 1.5px solid #00c48c;
+        padding: 28px;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        cursor: default;
+      }
+      .hover-card:hover {
+        transform: translateY(-6px);
+        box-shadow:
+          0 12px 32px rgba(0, 0, 0, 0.4),
+          0 0 24px rgba(0, 196, 140, 0.18);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="app"></div>
+    <div class="toast" id="toast">Copied!</div>
+    <script>
+      var C = {
+        bg: {
+          primary: "#003366",
+          secondary: "#002244",
+          surface: "#0A4070",
+          elevated: "#1A5080",
+        },
+        text: {
+          primary: "#FFFFFF",
+          secondary: "#B8D4E8",
+          muted: "#7FAACC",
+          inverse: "#003366",
+        },
+        accent: {
+          gold: "#F0C040",
+          teal: "#2ED8C4",
+          coral: "#FF7A6E",
+          sky: "#5EB8FF",
+          emerald: "#00C48C",
+        },
+        semantic: {
+          success: "#4ADE80",
+          warning: "#FBBF24",
+          error: "#F87171",
+          info: "#60A5FA",
+        },
+        border: {
+          subtle: "rgba(255,255,255,0.10)",
+          default: "rgba(255,255,255,0.18)",
+          strong: "rgba(255,255,255,0.30)",
+        },
+      };
+      function lum(x) {
+        var r = parseInt(x.slice(1, 3), 16) / 255,
+          g = parseInt(x.slice(3, 5), 16) / 255,
+          b = parseInt(x.slice(5, 7), 16) / 255;
+        function f(c) {
+          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        }
+        return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+      }
+      function cr(a, b) {
+        var l1 = lum(a),
+          l2 = lum(b);
+        return ((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05)).toFixed(
+          2,
+        );
+      }
+      function wc(r) {
+        if (r >= 7) return { l: "AAA", c: "#4ADE80" };
+        if (r >= 4.5) return { l: "AA", c: "#FBBF24" };
+        if (r >= 3) return { l: "AA Large", c: "#FB923C" };
+        return { l: "Fail", c: "#F87171" };
+      }
+      var tT;
+      function st(t) {
+        var e = document.getElementById("toast");
+        e.textContent = t;
+        e.classList.add("show");
+        clearTimeout(tT);
+        tT = setTimeout(function () {
+          e.classList.remove("show");
+        }, 1200);
+      }
+      function cc(h) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(h).then(function () {
+            st(h + " をコピーしました");
+          });
+        } else {
+          var t = document.createElement("textarea");
+          t.value = h;
+          t.style.position = "fixed";
+          t.style.opacity = "0";
+          document.body.appendChild(t);
+          t.select();
+          try {
+            document.execCommand("copy");
+            st(h + " をコピーしました");
+          } catch (e) {
+            st("コピーに失敗しました");
+          }
+          document.body.removeChild(t);
+        }
+      }
+      function sw(hex, name, bg, lg) {
+        var r = cr(hex, bg),
+          v = wc(parseFloat(r)),
+          lt = lum(hex) > 0.4;
+        return (
+          '<div class="sw ' +
+          (lg ? "lg " : "") +
+          (lt ? "lt" : "dk") +
+          '" style="background:' +
+          hex +
+          '" onclick="cc(\'' +
+          hex +
+          '\')"><div><div class="sw-n">' +
+          name +
+          '</div><div class="sw-h">' +
+          hex.toUpperCase() +
+          '</div></div><div class="sw-m"><span class="wb" style="color:' +
+          v.c +
+          '">' +
+          v.l +
+          '</span><span class="rt">' +
+          r +
+          ":1</span></div></div>"
+        );
+      }
+      function sec(t, c) {
+        return (
+          '<div style="margin-bottom:40px"><h2 class="mono" style="font-size:12px;font-weight:700;color:#5EB8FF;text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px">' +
+          t +
+          "</h2>" +
+          c +
+          "</div>"
+        );
+      }
+      function gr(items, cols) {
+        return (
+          '<div style="display:grid;grid-template-columns:repeat(' +
+          (cols || 4) +
+          ',1fr);gap:12px">' +
+          items.join("") +
+          "</div>"
+        );
+      }
+      function ks(o) {
+        return Object.keys(o);
+      }
+
+      var H = "";
+
+      // Header
+      H +=
+        '<div style="margin-bottom:52px"><div class="mono" style="display:inline-block;background:#F0C040;color:#003366;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px;letter-spacing:.1em;margin-bottom:16px">COLOR SYSTEM</div><h1 style="font-size:36px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px">#003366 配色パレット</h1><p style="color:#7FAACC;font-size:16px;line-height:1.6">ダークネイビーを基調とした配色。各色のコントラスト比とWCAGレベルを表示。<br>クリックでカラーコードをコピーできます。</p></div>';
+
+      // Background Swatches
+      H += sec(
+        "Background / 背景色",
+        gr(
+          ks(C.bg).map(function (k) {
+            return sw(C.bg[k], k, "#FFFFFF", false);
+          }),
+        ),
+      );
+
+      // Background Usage Demo
+      var bgLegend = [
+        {
+          n: "primary",
+          h: C.bg.primary,
+          u: "ページ全体の背景、最下層のベース",
+        },
+        {
+          n: "secondary",
+          h: C.bg.secondary,
+          u: "サイドバー、フッター、コードブロック",
+        },
+        { n: "surface", h: C.bg.surface, u: "カード、パネル、入力フィールド" },
+        {
+          n: "elevated",
+          h: C.bg.elevated,
+          u: "ツールチップ、モーダル、ドロップダウン",
+        },
+      ];
+      H += sec(
+        "Background Usage / 背景色の使い分け",
+        '<div style="border-radius:16px;overflow:hidden;border:1px solid ' +
+          C.border["default"] +
+          '">' +
+          '<div style="background:' +
+          C.bg.primary +
+          ';padding:20px;position:relative">' +
+          '<div class="mono" style="font-size:10px;font-weight:700;color:' +
+          C.text.muted +
+          ';position:absolute;top:8px;right:12px;opacity:.7">primary — ページ背景</div>' +
+          '<div style="display:grid;grid-template-columns:160px 1fr;gap:14px">' +
+          '<div style="background:' +
+          C.bg.secondary +
+          ';border-radius:12px;padding:16px;position:relative"><div class="mono" style="font-size:9px;font-weight:700;color:' +
+          C.text.muted +
+          ';position:absolute;top:6px;right:8px;opacity:.7">secondary</div><div style="margin-top:16px"><div style="padding:7px 10px;border-radius:6px;background:' +
+          C.bg.primary +
+          ";color:" +
+          C.text.primary +
+          ';font-size:13px;font-weight:600;margin-bottom:4px">Dashboard</div><div style="padding:7px 10px;color:' +
+          C.text.secondary +
+          ';font-size:13px;margin-bottom:4px">Settings</div><div style="padding:7px 10px;color:' +
+          C.text.secondary +
+          ';font-size:13px">Reports</div></div></div>' +
+          '<div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
+          '<div style="background:' +
+          C.bg.surface +
+          ';border-radius:12px;padding:16px;position:relative"><div class="mono" style="font-size:9px;font-weight:700;color:' +
+          C.text.muted +
+          ';position:absolute;top:6px;right:8px;opacity:.7">surface</div><div style="color:' +
+          C.text.primary +
+          ';font-size:13px;font-weight:700;margin-bottom:4px">売上</div><div style="color:' +
+          C.text.muted +
+          ';font-size:11px">¥1,240,000</div></div>' +
+          '<div style="background:' +
+          C.bg.surface +
+          ';border-radius:12px;padding:16px;position:relative;overflow:visible"><div class="mono" style="font-size:9px;font-weight:700;color:' +
+          C.text.muted +
+          ';position:absolute;top:6px;right:8px;opacity:.7">surface</div><div style="color:' +
+          C.text.primary +
+          ';font-size:13px;font-weight:700;margin-bottom:4px">ユーザー数</div><div style="color:' +
+          C.text.muted +
+          ';font-size:11px">3,842</div><div style="background:' +
+          C.bg.elevated +
+          ';border-radius:8px;padding:10px 14px;position:absolute;top:-8px;right:-4px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:2"><div class="mono" style="font-size:9px;font-weight:700;color:' +
+          C.text.muted +
+          ';position:absolute;top:4px;right:6px;opacity:.7">elevated</div><div style="color:' +
+          C.text.primary +
+          ';font-size:11px;font-weight:600;margin-top:12px;white-space:nowrap">詳細を表示 →</div></div></div>' +
+          '<div style="background:' +
+          C.bg.surface +
+          ';border-radius:12px;padding:16px"><div style="color:' +
+          C.text.primary +
+          ';font-size:13px;font-weight:700;margin-bottom:4px">CVR</div><div style="color:' +
+          C.text.muted +
+          ';font-size:11px">4.2%</div></div>' +
+          '<div style="background:' +
+          C.bg.surface +
+          ';border-radius:12px;padding:16px"><div style="color:' +
+          C.text.primary +
+          ';font-size:13px;font-weight:700;margin-bottom:4px">直帰率</div><div style="color:' +
+          C.text.muted +
+          ';font-size:11px">32.1%</div></div>' +
+          "</div></div></div></div>" +
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr)">' +
+          bgLegend
+            .map(function (it, i) {
+              return (
+                '<div style="padding:14px 16px;background:' +
+                it.h +
+                ";display:flex;flex-direction:column;gap:6px;" +
+                (i < 3 ? "border-right:1px solid " + C.border.subtle : "") +
+                '"><div style="width:14px;height:14px;border-radius:4px;background:' +
+                it.h +
+                ";border:1px solid " +
+                C.border["default"] +
+                '"></div><div class="mono" style="font-size:12px;font-weight:700;color:' +
+                C.text.primary +
+                '">' +
+                it.n +
+                '</div><div style="font-size:11px;color:' +
+                C.text.muted +
+                ';line-height:1.5">' +
+                it.u +
+                "</div></div>"
+              );
+            })
+            .join("") +
+          "</div></div>",
+      );
+
+      // Text
+      H += sec(
+        "Text / テキスト色（on #003366）",
+        gr(
+          ks(C.text).map(function (k) {
+            return sw(C.text[k], k, "#003366", true);
+          }),
+        ),
+      );
+
+      // Accent
+      H += sec(
+        "Accent / アクセント色（on #003366）",
+        gr(
+          ks(C.accent).map(function (k) {
+            return sw(C.accent[k], k, "#003366", true);
+          }),
+          5,
+        ) +
+          '<div style="margin-top:16px;padding:16px 20px;background:' +
+          C.bg.secondary +
+          ";border-radius:10px;border:1px solid " +
+          C.border.subtle +
+          ';display:flex;align-items:center;gap:14px"><div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><div style="width:28px;height:28px;border-radius:6px;background:#007356;border:1px solid ' +
+          C.border["default"] +
+          '"></div><span style="color:' +
+          C.text.muted +
+          ';font-size:13px">→</span><div style="width:28px;height:28px;border-radius:6px;background:#00C48C;border:1px solid ' +
+          C.border["default"] +
+          '"></div></div><p style="color:' +
+          C.text.secondary +
+          ';font-size:13px;line-height:1.6;margin:0"><strong style="color:' +
+          C.text.primary +
+          '">emerald</strong> は #007356 の色相を維持しつつ明度を上げた色です。元の #007356 は背景とのコントラスト比が 2.15:1 と不十分なため、テキストやアイコンには <span style="color:#00C48C;font-weight:600">#00C48C</span>（5.6:1）を使用してください。</p></div>',
+      );
+
+      // Emerald Usage
+      var EP = "";
+      EP +=
+        '<div style="background:' +
+        C.bg.surface +
+        ";border-radius:14px;padding:24px;border:1px solid " +
+        C.border.subtle +
+        '"><div class="mono" style="font-size:11px;font-weight:700;color:' +
+        C.text.muted +
+        ';letter-spacing:.1em;margin-bottom:16px">PROGRESS &amp; STATUS</div><div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><div style="flex:1;height:8px;background:' +
+        C.bg.secondary +
+        ';border-radius:4px;overflow:hidden"><div style="width:68%;height:100%;background:linear-gradient(90deg,#007356,#00C48C);border-radius:4px"></div></div><span class="mono" style="color:#00C48C;font-size:13px;font-weight:700">68%</span></div><div style="display:flex;gap:12px;flex-wrap:wrap"><span style="display:flex;align-items:center;gap:6px;font-size:13px;color:' +
+        C.text.secondary +
+        '"><span style="width:8px;height:8px;border-radius:50%;background:#00C48C;display:inline-block"></span> オンライン</span><span style="display:flex;align-items:center;gap:6px;font-size:13px;color:' +
+        C.text.secondary +
+        '"><span style="width:8px;height:8px;border-radius:50%;background:' +
+        C.accent.gold +
+        ';display:inline-block"></span> 離席中</span><span style="display:flex;align-items:center;gap:6px;font-size:13px;color:' +
+        C.text.secondary +
+        '"><span style="width:8px;height:8px;border-radius:50%;background:' +
+        C.text.muted +
+        ';display:inline-block"></span> オフライン</span></div><div style="margin-top:16px;display:flex;gap:8px"><span style="font-size:12px;font-weight:600;color:#00C48C;background:#00C48C18;border:1px solid #00C48C33;padding:4px 12px;border-radius:6px">進行中</span><span style="font-size:12px;font-weight:600;color:' +
+        C.accent.gold +
+        ";background:" +
+        C.accent.gold +
+        "18;border:1px solid " +
+        C.accent.gold +
+        '33;padding:4px 12px;border-radius:6px">レビュー待ち</span><span style="font-size:12px;font-weight:600;color:' +
+        C.semantic.success +
+        ";background:" +
+        C.semantic.success +
+        "18;border:1px solid " +
+        C.semantic.success +
+        '33;padding:4px 12px;border-radius:6px">完了</span></div></div>';
+
+      EP +=
+        '<div style="background:' +
+        C.bg.surface +
+        ";border-radius:14px;padding:24px;border:1px solid " +
+        C.border.subtle +
+        '"><div class="mono" style="font-size:11px;font-weight:700;color:' +
+        C.text.muted +
+        ';letter-spacing:.1em;margin-bottom:16px">NAVIGATION</div><div style="background:' +
+        C.bg.secondary +
+        ';border-radius:10px;padding:8px;margin-bottom:16px"><div style="padding:10px 14px;border-radius:8px;background:#00C48C15;border-left:3px solid #00C48C;color:' +
+        C.text.primary +
+        ';font-size:13px;font-weight:600;margin-bottom:4px">ダッシュボード</div><div style="padding:10px 14px;color:' +
+        C.text.muted +
+        ';font-size:13px;margin-bottom:4px">プロジェクト</div><div style="padding:10px 14px;color:' +
+        C.text.muted +
+        ';font-size:13px;margin-bottom:4px">メンバー</div><div style="padding:10px 14px;color:' +
+        C.text.muted +
+        ';font-size:13px">設定</div></div><div style="display:flex;background:' +
+        C.bg.secondary +
+        ';border-radius:10px;padding:4px"><div style="flex:1;text-align:center;padding:9px 0;font-size:12px;font-weight:700;color:' +
+        C.text.inverse +
+        ';background:#00C48C;border-radius:7px">月次</div><div style="flex:1;text-align:center;padding:9px 0;font-size:12px;font-weight:600;color:' +
+        C.text.muted +
+        '">四半期</div><div style="flex:1;text-align:center;padding:9px 0;font-size:12px;font-weight:600;color:' +
+        C.text.muted +
+        '">年次</div></div></div>';
+
+      EP +=
+        '<div style="background:' +
+        C.bg.surface +
+        ";border-radius:14px;padding:24px;border:1px solid " +
+        C.border.subtle +
+        '"><div class="mono" style="font-size:11px;font-weight:700;color:' +
+        C.text.muted +
+        ';letter-spacing:.1em;margin-bottom:16px">CTA HIERARCHY</div><div style="display:flex;flex-direction:column;gap:10px"><button style="width:100%;background:' +
+        C.accent.gold +
+        ";color:" +
+        C.text.inverse +
+        ';border:none;border-radius:9px;padding:12px 0;font-weight:700;font-size:13px;cursor:pointer">購入する — Primary (gold)</button><button style="width:100%;background:#00C48C;color:' +
+        C.text.inverse +
+        ';border:none;border-radius:9px;padding:12px 0;font-weight:700;font-size:13px;cursor:pointer">カートに追加 — Secondary (emerald)</button><button style="width:100%;background:transparent;color:' +
+        C.text.secondary +
+        ";border:1.5px solid " +
+        C.border.strong +
+        ';border-radius:9px;padding:11px 0;font-weight:600;font-size:13px;cursor:pointer">後で見る — Tertiary (outline)</button></div><p style="color:' +
+        C.text.muted +
+        ';font-size:11px;margin-top:14px;line-height:1.6">gold → emerald → outline の順で視覚的な優先順位を表現</p></div>';
+
+      var bars = [
+        { h: 45, c: C.accent.gold },
+        { h: 72, c: "#00C48C" },
+        { h: 38, c: C.accent.sky },
+        { h: 60, c: C.accent.coral },
+        { h: 80, c: C.accent.gold },
+        { h: 55, c: "#00C48C" },
+        { h: 42, c: C.accent.sky },
+        { h: 90, c: C.accent.coral },
+        { h: 68, c: C.accent.gold },
+        { h: 75, c: "#00C48C" },
+        { h: 50, c: C.accent.sky },
+        { h: 85, c: C.accent.coral },
+      ];
+      var bH = bars
+        .map(function (b) {
+          return (
+            '<div style="flex:1;height:' +
+            b.h +
+            "%;background:" +
+            b.c +
+            ';border-radius:4px 4px 0 0;opacity:.85"></div>'
+          );
+        })
+        .join("");
+      var lI = [
+        { l: "売上", c: C.accent.gold },
+        { l: "利益", c: "#00C48C" },
+        { l: "訪問数", c: C.accent.sky },
+        { l: "コスト", c: C.accent.coral },
+      ];
+      var lH = lI
+        .map(function (i) {
+          return (
+            '<span style="display:flex;align-items:center;gap:6px;font-size:12px;color:' +
+            C.text.secondary +
+            '"><span style="width:10px;height:10px;border-radius:3px;background:' +
+            i.c +
+            ';display:inline-block"></span>' +
+            i.l +
+            "</span>"
+          );
+        })
+        .join("");
+      EP +=
+        '<div style="background:' +
+        C.bg.surface +
+        ";border-radius:14px;padding:24px;border:1px solid " +
+        C.border.subtle +
+        '"><div class="mono" style="font-size:11px;font-weight:700;color:' +
+        C.text.muted +
+        ';letter-spacing:.1em;margin-bottom:16px">DATA VISUALIZATION</div><div style="display:flex;align-items:flex-end;gap:6px;height:120px;margin-bottom:16px">' +
+        bH +
+        '</div><div style="display:flex;gap:16px;flex-wrap:wrap">' +
+        lH +
+        '</div><p style="color:' +
+        C.text.muted +
+        ';font-size:11px;margin-top:14px;line-height:1.6">4色のアクセントは色相が大きく異なるため識別性が高い</p></div>';
+
+      H += sec(
+        "Emerald Usage / emerald の使用例",
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+          EP +
+          "</div>",
+      );
+
+      // Semantic
+      H += sec(
+        "Semantic / セマンティック色（on #003366）",
+        gr(
+          ks(C.semantic).map(function (k) {
+            return sw(C.semantic[k], k, "#003366", false);
+          }),
+        ),
+      );
+
+      // Borders
+      H += sec(
+        "Border / ボーダー色",
+        '<div style="display:flex;gap:16px">' +
+          ks(C.border)
+            .map(function (k) {
+              return (
+                '<div style="flex:1;height:64px;border:2px solid ' +
+                C.border[k] +
+                ";border-radius:12px;display:flex;align-items:center;justify-content:center;color:" +
+                C.text.muted +
+                ';font-size:12px;font-weight:600" class="mono">' +
+                k +
+                "</div>"
+              );
+            })
+            .join("") +
+          "</div>",
+      );
+
+      // ── Card Border Comparison
+      function demoCard(bs, label, desc) {
+        return (
+          '<div style="flex:1;min-width:240px">' +
+          '<div class="mono" style="font-size:11px;font-weight:700;color:' +
+          C.text.muted +
+          ';letter-spacing:.1em;margin-bottom:10px">' +
+          label +
+          "</div>" +
+          '<div style="background:' +
+          C.bg.surface +
+          ";border-radius:16px;" +
+          bs +
+          ';padding:28px">' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#00C48C,' +
+          C.accent.sky +
+          ');display:flex;align-items:center;justify-content:center;font-size:18px">✦</div><div><div style="font-weight:700;font-size:16px">Card Title</div><div style="color:' +
+          C.text.muted +
+          ';font-size:13px;margin-top:2px">Subtitle text</div></div></div>' +
+          '<p style="color:' +
+          C.text.secondary +
+          ';font-size:14px;line-height:1.7;margin:0 0 20px">本文テキストのサンプルです。カードの枠線スタイルを比較できます。</p>' +
+          '<div style="display:flex;gap:10px"><button style="background:#00C48C;color:' +
+          C.text.inverse +
+          ';border:none;border-radius:8px;padding:10px 22px;font-weight:700;font-size:13px;cursor:pointer">Action</button><button style="background:transparent;color:' +
+          C.text.primary +
+          ";border:1.5px solid " +
+          C.border.strong +
+          ';border-radius:8px;padding:10px 22px;font-weight:600;font-size:13px;cursor:pointer">Cancel</button></div>' +
+          "</div>" +
+          '<p style="color:' +
+          C.text.muted +
+          ';font-size:12px;margin-top:12px;line-height:1.6">' +
+          desc +
+          "</p></div>"
+        );
+      }
+
+      H += sec(
+        "Card Border / カード枠の比較",
+        '<div style="display:flex;gap:20px;flex-wrap:wrap">' +
+          demoCard(
+            "border:1.5px solid #00C48C",
+            "EMERALD BORDER",
+            "emerald の枠線でカードを強調。ブランドカラーとして統一感が出ます。アクションカードや重要な情報パネル向け。",
+          ) +
+          demoCard(
+            "border:1px solid " + C.border["default"],
+            "SUBTLE BORDER（従来）",
+            "半透明の白ボーダーで控えめに。情報量の多い画面やカードが並ぶレイアウトで画面が静かにまとまります。",
+          ) +
+          demoCard(
+            "border:1.5px solid #00C48C;box-shadow:0 0 20px rgba(0,196,140,.12)",
+            "EMERALD + GLOW",
+            "ボーダーに微細な glow を付与。ホバー時やフォーカス状態、特に強調したい1枚のカードに最適。",
+          ) +
+          "</div>" +
+          // Interactive hover card
+          '<div style="margin-top:24px"><div class="mono" style="font-size:11px;font-weight:700;color:' +
+          C.text.muted +
+          ';letter-spacing:.1em;margin-bottom:10px">EMERALD HOVER — カーソルを乗せてください</div>' +
+          '<div class="hover-card" style="max-width:460px">' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#00C48C,' +
+          C.accent.sky +
+          ');display:flex;align-items:center;justify-content:center;font-size:18px">✦</div><div><div style="font-weight:700;font-size:16px">Card Title</div><div style="color:' +
+          C.text.muted +
+          ';font-size:13px;margin-top:2px">Subtitle text</div></div></div>' +
+          '<p style="color:' +
+          C.text.secondary +
+          ';font-size:14px;line-height:1.7;margin:0">本文テキストのサンプルです。ホバーすると浮き上がり、影と emerald の glow が付きます。</p>' +
+          "</div>" +
+          '<p style="color:' +
+          C.text.muted +
+          ';font-size:12px;margin-top:12px;line-height:1.6">通常時は emerald border のみ。ホバーで <span class="mono" style="color:' +
+          C.accent.sky +
+          '">translateY(-6px)</span> + <span class="mono" style="color:' +
+          C.accent.sky +
+          '">box-shadow</span>（影 + glow）が加わります。クリッカブルなカード型リンクやダッシュボードのウィジェットに最適。</p>' +
+          "</div>",
+      );
+
+      // Preview (with emerald border)
+      H += sec(
+        "Preview / プレビュー",
+        '<div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">' +
+          '<div style="background:' +
+          C.bg.surface +
+          ';border-radius:16px;border:1.5px solid #00C48C;padding:28px;max-width:400px;min-width:300px">' +
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#00C48C,' +
+          C.accent.sky +
+          ');display:flex;align-items:center;justify-content:center;font-size:18px">✦</div><div><div style="font-weight:700;font-size:16px">Card Title</div><div style="color:' +
+          C.text.muted +
+          ';font-size:13px;margin-top:2px">Subtitle text here</div></div></div>' +
+          '<p style="color:' +
+          C.text.secondary +
+          ';font-size:14px;line-height:1.7;margin:0 0 20px">本文テキストのサンプルです。この配色は背景色 #003366 に対して十分なコントラスト比を確保しています。</p>' +
+          '<div style="display:flex;gap:10px"><button style="background:' +
+          C.accent.gold +
+          ";color:" +
+          C.text.inverse +
+          ';border:none;border-radius:8px;padding:10px 22px;font-weight:700;font-size:13px;cursor:pointer">Primary</button><button style="background:transparent;color:' +
+          C.text.primary +
+          ";border:1.5px solid " +
+          C.border.strong +
+          ';border-radius:8px;padding:10px 22px;font-weight:600;font-size:13px;cursor:pointer">Secondary</button></div></div>' +
+          '<div style="flex:1;min-width:240px">' +
+          '<h3 style="font-size:18px;font-weight:700;margin-bottom:12px">タイポグラフィ</h3>' +
+          '<p style="color:' +
+          C.text.primary +
+          ';font-size:16px;font-weight:700;margin-bottom:6px">見出し — Primary (#FFFFFF) — 13.9:1</p>' +
+          '<p style="color:' +
+          C.text.secondary +
+          ';font-size:14px;margin-bottom:6px">本文テキスト — Secondary (#B8D4E8) — 8.6:1</p>' +
+          '<p style="color:' +
+          C.text.muted +
+          ';font-size:13px;margin-bottom:24px">補足テキスト — Muted (#7FAACC) — 4.7:1</p>' +
+          '<h3 style="font-size:18px;font-weight:700;margin-bottom:12px">ステータス</h3>' +
+          '<div style="display:flex;gap:10px;flex-wrap:wrap"><span style="background:#4ADE8022;color:#4ADE80;border:1px solid #4ADE8044;border-radius:8px;padding:6px 16px;font-size:13px;font-weight:600">Success</span><span style="background:#FBBF2422;color:#FBBF24;border:1px solid #FBBF2444;border-radius:8px;padding:6px 16px;font-size:13px;font-weight:600">Warning</span><span style="background:#F8717122;color:#F87171;border:1px solid #F8717144;border-radius:8px;padding:6px 16px;font-size:13px;font-weight:600">Error</span><span style="background:#60A5FA22;color:#60A5FA;border:1px solid #60A5FA44;border-radius:8px;padding:6px 16px;font-size:13px;font-weight:600">Info</span></div>' +
+          '<h3 style="font-size:18px;font-weight:700;margin:24px 0 12px">リンク &amp; インタラクション</h3>' +
+          '<p style="font-size:14px"><span style="color:' +
+          C.accent.sky +
+          ';text-decoration:underline;cursor:pointer">リンクテキスト (#5EB8FF)</span> <span style="color:' +
+          C.text.muted +
+          '">— アクセント Sky を使用</span></p>' +
+          "</div></div>",
+      );
+
+      // CSS Variables
+      var cv = [
+        ["--bg-primary", "#003366"],
+        ["--bg-secondary", "#002244"],
+        ["--bg-surface", "#0A4070"],
+        ["--bg-elevated", "#1A5080"],
+        ["--text-primary", "#FFFFFF"],
+        ["--text-secondary", "#B8D4E8"],
+        ["--text-muted", "#7FAACC"],
+        ["--accent-gold", "#F0C040"],
+        ["--accent-teal", "#2ED8C4"],
+        ["--accent-coral", "#FF7A6E"],
+        ["--accent-sky", "#5EB8FF"],
+        ["--accent-emerald", "#00C48C"],
+      ];
+      H += sec(
+        "CSS Variables / 実装用コード",
+        '<div style="background:' +
+          C.bg.secondary +
+          ";border-radius:12px;padding:24px;font-size:13px;line-height:2;color:" +
+          C.text.secondary +
+          ";border:1px solid " +
+          C.border.subtle +
+          ';overflow-x:auto" class="mono"><span style="color:' +
+          C.text.muted +
+          '">:root {</span><br>' +
+          cv
+            .map(function (v) {
+              return (
+                '&nbsp;&nbsp;<span style="color:' +
+                C.accent.sky +
+                '">' +
+                v[0] +
+                '</span><span style="color:' +
+                C.text.muted +
+                '">: </span><span style="color:' +
+                C.accent.gold +
+                '">' +
+                v[1] +
+                '</span><span style="color:' +
+                C.text.muted +
+                '">;</span>'
+              );
+            })
+            .join("<br>") +
+          '<br><span style="color:' +
+          C.text.muted +
+          '">}</span></div>',
+      );
+
+      document.getElementById("app").innerHTML = H;
+    </script>
+  </body>
+</html>
