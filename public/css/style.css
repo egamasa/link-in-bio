@@ -7,20 +7,26 @@
 body {
   color: #b8d4e8;
   background-color: #003366;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  height: 100vh;
 }
 
 main {
-  position: absolute;
-  place-self: center;
-  inset: 0;
+  flex: 1;
   max-width: 768px;
-  padding-bottom: 3em;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  scrollbar-color: #b8d4e8 #003366;
 }
 
 main.container {
   display: grid;
   grid-template-columns: 50% 50%;
-  margin: 1em;
+  margin: 1em 1em 0 1em;
 }
 
 .panel {
@@ -28,6 +34,18 @@ main.container {
   flex-direction: column;
   justify-content: center;
   gap: 1em;
+}
+
+.panel.scroll {
+  justify-content: flex-start;
+  overflow-y: auto;
+  padding: 1em 0; /* hover移動領域の確保 */
+}
+
+.panel.scroll .items {
+  /* itemが少ない場合に中央揃え */
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .top,
@@ -53,15 +71,9 @@ main.container {
 ul.item-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 1em;
   list-style: none;
 }
-
-/* ul.item-list li {
-  border-style: solid;
-  border-radius: 16px;
-  border-width: 1px;
-} */
 
 ul.item-list li a {
   text-decoration: none;
@@ -132,16 +144,32 @@ ul.item-list li a {
 footer {
   color: #b8d4e8;
   background-color: #003366;
-  position: fixed;
+  position: sticky;
+  padding: 4px;
   bottom: 0;
+  flex-shrink: 0;
   width: 100%;
-  height: 2em;
   text-align: center;
 }
 
 @media screen and (max-width: 767px) {
+  body {
+    overflow: auto;
+    height: auto;
+  }
+
+  main {
+    flex: none;
+    overflow: visible;
+  }
+
   main.container {
     grid-template-columns: 100%;
     gap: 1.5em;
+    height: auto;
+  }
+
+  .panel.scroll {
+    overflow-y: visible;
   }
 }
