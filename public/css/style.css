@@ -161,11 +161,11 @@ footer::before {
   background: linear-gradient(to bottom, transparent, #036);
   content: "";
   height: 2em;
-  left: 0;
+  left: 50%;
   pointer-events: none;
   position: absolute;
   top: -2em;
-  width: 100%;
+  width: 50%;
 }
 
 @media screen and (width <= 767px) {
@@ -187,5 +187,10 @@ footer::before {
 
   .panel.scroll {
     overflow-y: visible;
+  }
+
+  footer::before {
+    left: 0;
+    width: 100%;
   }
 }
