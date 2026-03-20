@@ -189,6 +189,10 @@ footer::before {
     overflow-y: visible;
   }
 
+  .items {
+    padding: 0 3em;
+  }
+
   footer::before {
     left: 0;
     width: 100%;
