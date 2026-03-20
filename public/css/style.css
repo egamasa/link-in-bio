@@ -59,6 +59,7 @@ main.container {
 
 .top img {
   border-radius: 16px;
+  height: auto;
   width: 80%;
 }
 
