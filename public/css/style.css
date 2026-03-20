@@ -10,6 +10,10 @@ body {
   color: #b8d4e8;
   display: flex;
   flex-direction: column;
+  font-family: Inter, sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 300;
   height: 100vh;
   overflow: hidden;
 }
