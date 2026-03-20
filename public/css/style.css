@@ -10,6 +10,10 @@ body {
   color: #b8d4e8;
   display: flex;
   flex-direction: column;
+  font-family: Inter, sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 300;
   height: 100vh;
   overflow: hidden;
 }
@@ -153,6 +157,17 @@ footer {
   width: 100%;
 }
 
+footer::before {
+  background: linear-gradient(to bottom, transparent, #036);
+  content: "";
+  height: 2em;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: -2em;
+  width: 50%;
+}
+
 @media screen and (width <= 767px) {
   body {
     height: auto;
@@ -172,5 +187,14 @@ footer {
 
   .panel.scroll {
     overflow-y: visible;
+  }
+
+  .items {
+    padding: 0 3em;
+  }
+
+  footer::before {
+    left: 0;
+    width: 100%;
   }
 }
