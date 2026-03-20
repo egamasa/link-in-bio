@@ -157,6 +157,17 @@ footer {
   width: 100%;
 }
 
+footer::before {
+  background: linear-gradient(to bottom, transparent, #036);
+  content: "";
+  height: 2em;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: -2em;
+  width: 100%;
+}
+
 @media screen and (width <= 767px) {
   body {
     height: auto;
