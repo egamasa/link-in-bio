@@ -8,16 +8,31 @@
       name="description"
       content="egamasa's Link-in-Bio Page. I'm a web engineer."
     />
+    <!-- Favicon -->
     <link rel="icon" href="./favicon.ico" sizes="48x48" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300&display=optional"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
     />
-    <link rel="stylesheet" href="./css/style.css" />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300&display=optional"
+        rel="stylesheet"
+      />
+    </noscript>
+    <!-- Stylesheet -->
+    <link rel="preload" href="/css/style.css" as="style" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <!-- SVG icons from https://www.mingcute.com/ -->
@@ -83,8 +98,19 @@
         <div class="top">
           <h1>R203.org</h1>
           <picture>
-            <source type="image/webp" srcset="images/top.webp" />
-            <img src="images/top.jpg" alt="" />
+            <source
+              type="image/webp"
+              srcset="images/top.webp"
+              width="600"
+              height="338"
+            />
+            <img
+              src="images/top.jpg"
+              alt=""
+              fetchpriority="high"
+              width="600"
+              height="338"
+            />
           </picture>
         </div>
         <div class="profile">
