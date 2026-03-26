@@ -82,16 +82,27 @@
           <picture>
             <source
               type="image/webp"
-              srcset="images/top.webp"
-              width="600"
-              height="338"
+              srcset="
+                images/top.webp     620w,
+                images/top@2x.webp 1240w,
+                images/top@3x.webp 1860w
+              "
+              sizes="(max-width: 767px) 80vw, 30vw"
+              width="620"
+              height="350"
             />
             <img
               src="images/top.jpg"
+              srcset="
+                images/top.jpg     620w,
+                images/top@2x.jpg 1240w,
+                images/top@3x.jpg 1860w
+              "
+              sizes="(max-width: 767px) 80vw, 30vw"
               alt=""
               fetchpriority="high"
-              width="600"
-              height="338"
+              width="620"
+              height="350"
             />
           </picture>
         </div>
