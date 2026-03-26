@@ -1,5 +1,7 @@
 # link-in-bio
 
+[![FTP Deploy](https://github.com/egamasa/link-in-bio/actions/workflows/ftp-deploy.yml/badge.svg?branch=main)](https://github.com/egamasa/link-in-bio/actions/workflows/ftp-deploy.yml)
+
 egamasa の Link-in-Bio ページ [R203.org](https://r203.org) のソースコードです。
 
 ## 技術スタック
